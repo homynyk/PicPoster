@@ -29,26 +29,41 @@ public class ESClient {
     // JSON Utilities
     private static Gson gson = new Gson();
 
-    public static void searchPicPosts(String str)
+    public static void searchPicPosts(final String str)
 	    throws ClientProtocolException, IOException {
-	HttpGet searchRequest = new HttpGet(
-		"http://cmput301.softwareprocess.es:8080/testing/homynyk/_search?pretty=1&q="
-			+ java.net.URLEncoder.encode(str, "UTF-8"));
-	HttpResponse response = client.execute(searchRequest);
-	String status = response.getStatusLine().toString();
-	System.out.println(status);
 
-	String json = getEntityContent(response);
+	Thread thread = new Thread() {
+	    @Override
+	    public void run() {
+		
+		try{
+		
+		HttpGet searchRequest = new HttpGet(
+			"http://cmput301.softwareprocess.es:8080/testing/homynyk/_search?pretty=1&q="
+				+ java.net.URLEncoder.encode(str, "UTF-8"));
+		HttpResponse response = client.execute(searchRequest);
+		String status = response.getStatusLine().toString();
+		System.out.println(status);
 
-	Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<PicPostModel>>() {
-	}.getType();
-	ElasticSearchSearchResponse<PicPostModel> esResponse = gson.fromJson(
-		json, elasticSearchSearchResponseType);
-	System.err.println(esResponse);
-	for (ElasticSearchResponse<PicPostModel> r : esResponse.getHits()) {
-	    PicPostModel recipe = r.getSource();
-	    System.err.println(recipe);
-	}
+		String json = getEntityContent(response);
+
+		Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<PicPostModel>>() {
+		}.getType();
+		ElasticSearchSearchResponse<PicPostModel> esResponse = gson
+			.fromJson(json, elasticSearchSearchResponseType);
+		System.err.println(esResponse);
+		for (ElasticSearchResponse<PicPostModel> r : esResponse
+			.getHits()) {
+		    PicPostModel recipe = r.getSource();
+		    System.err.println(recipe);
+		}
+		}
+		catch(Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	};
+
     }
 
     static String getEntityContent(HttpResponse response) throws IOException {

@@ -80,9 +80,8 @@ public class PicPosterActivity extends Activity {
 	public void searchPosts(View view) throws ClientProtocolException, IOException {
 		String searchTerm = this.searchPostsEditText.getText().toString();
 		
-		Activity.runOnUiThread();
+
 		ESClient.searchPicPosts(searchTerm);
-		//ESClient.searchPicPosts(searchTerm);
 		
 		//TODO : perform search, update model, etc
 		
