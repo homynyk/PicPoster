@@ -1,0 +1,20 @@
+/*
+     * Taken from
+     * https://github.com/homynyk/ESDemo/blob/master/ESDemo/src/ca/ualberta
+ */
+
+package ca.ualberta.cs.picposter;
+
+public class ElasticSearchResponse<T> {
+    String _index;
+    String _type;
+    String _id;
+    int _version;
+    boolean exists;
+    T _source;
+    double max_score;
+
+    public T getSource() {
+	return _source;
+    }
+}

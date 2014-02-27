@@ -1,5 +1,9 @@
 package ca.ualberta.cs.picposter;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -73,8 +77,12 @@ public class PicPosterActivity extends Activity {
 	}
 
 
-	public void searchPosts(View view) {
+	public void searchPosts(View view) throws ClientProtocolException, IOException {
 		String searchTerm = this.searchPostsEditText.getText().toString();
+		
+		Activity.runOnUiThread();
+		ESClient.searchPicPosts(searchTerm);
+		//ESClient.searchPicPosts(searchTerm);
 		
 		//TODO : perform search, update model, etc
 		
